@@ -5,7 +5,6 @@ import com.pharmacy.scs.dto.DeliveryDTO;
 import com.pharmacy.scs.dto.DeliveryResponseDTO;
 import com.pharmacy.scs.dto.DeliveryUpdateRequest;
 import com.pharmacy.scs.entity.Delivery;
-import com.pharmacy.scs.exception.DeliveryException;
 import com.pharmacy.scs.exception.DeliveryNotFoundException;
 import com.pharmacy.scs.mapper.DeliveryMapper;
 import com.pharmacy.scs.service.DeliveryService;
@@ -64,12 +63,6 @@ public class DeliveryController {
         Delivery updatedDelivery = deliveryService.updateDeliveryStatus(deliveryId, request.getStatus());
         return ResponseEntity.ok(deliveryMapper.toDto(updatedDelivery));
     }
-
-//    @PutMapping("/{deliveryId}/confirm")
-//    public ResponseEntity<?> confirmDelivery(@PathVariable Long deliveryId) throws DeliveryException {
-//        deliveryService.completeDelivery(deliveryId);
-//        return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.ACCEPTED);
-//    }
 
     @PutMapping("/{deliveryId}/confirm")
     public ResponseEntity<DeliveryResponseDTO> confirmDelivery(@PathVariable Long deliveryId) {

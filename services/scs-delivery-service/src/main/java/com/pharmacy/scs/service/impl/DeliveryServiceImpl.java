@@ -3,10 +3,8 @@ package com.pharmacy.scs.service.impl;
 import com.pharmacy.scs.dto.DeliveryEvent;
 import com.pharmacy.scs.entity.Delivery;
 import com.pharmacy.scs.entity.DeliveryStatus;
-import com.pharmacy.scs.exception.DeliveryException;
 import com.pharmacy.scs.exception.DeliveryNotFoundException;
 import com.pharmacy.scs.repository.DeliveryRepository;
-import com.pharmacy.scs.repository.UserRepository;
 import com.pharmacy.scs.service.DeliveryService;
 import com.pharmacy.scs.service.KafkaDeliveryEventService;
 import lombok.RequiredArgsConstructor;
@@ -56,18 +54,6 @@ public class DeliveryServiceImpl implements DeliveryService {
         return deliveryRepository.save(delivery);
     }
 
-    @Override
-    @Transactional
-    public void confirmDelivery(Long deliveryId) throws DeliveryException {
-        Delivery delivery = deliveryRepository.findById(deliveryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Delivery not found"));
-
-//        if (delivery.getConfirmedAt() != null) {
-//            throw new DeliveryException("Delivery already confirmed");
-//        }
-//        delivery.setConfirmedAt(LocalDateTime.now()); //??
-        deliveryRepository.save(delivery);
-    }
 
     @Override
     @Transactional

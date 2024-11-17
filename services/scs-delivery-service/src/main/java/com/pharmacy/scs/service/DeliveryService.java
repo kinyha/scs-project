@@ -12,6 +12,5 @@ public interface DeliveryService {
     Optional<Delivery> getDeliveryByTrackingNumber(String trackingNumber);
     List<Delivery> getDeliveriesByUserId(Long userId);
     Delivery updateDeliveryStatus(Long deliveryId, DeliveryStatus status);
-    void confirmDelivery(Long deliveryId) throws DeliveryException;
     Delivery completeDelivery(Long deliveryId);
 }
