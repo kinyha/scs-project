@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delivery Status Update</title>
+</head>
+<body>
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2>Delivery Status Update</h2>
+    <p>Hello <span th:text="${userName}">User</span>,</p>
+    <p>Your delivery with tracking number <strong th:text="${trackingNumber}">TRACKING</strong>
+        has been updated to: <strong th:text="${status}">STATUS</strong></p>
+    <p>Track your delivery at: <a th:href="@{'http://tracking.example.com/' + ${trackingNumber}}">Track Delivery</a></p>
+    <p>Best regards,<br>SCS Team</p>
+</div>
+</body>
+</html>
