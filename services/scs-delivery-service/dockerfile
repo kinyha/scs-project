@@ -1,0 +1,18 @@
+# Базовый образ с Java 17
+FROM eclipse-temurin:17-jdk
+
+# Рабочая директория внутри контейнера
+WORKDIR /app
+
+# Копируем JAR файл в контейнер
+COPY target/scs-delivery-service-1.0-SNAPSHOT.jar app.jar
+
+# Переменные окружения (пример)
+ENV SPRING_PROFILES_ACTIVE=docker
+ENV SERVER_PORT=8082
+
+# Порт, который будет открыт
+EXPOSE 8082
+
+# Команда запуска приложения
+ENTRYPOINT ["java", "-jar", "app.jar"]
