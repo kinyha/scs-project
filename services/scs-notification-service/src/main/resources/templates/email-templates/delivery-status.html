@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Обновление статуса доставки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+        }
+        .status {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h2>Обновление статуса доставки</h2>
+</div>
+
+<div class="content">
+    <p>Здравствуйте, <span th:text="${userName}">Уважаемый клиент</span>!</p>
+
+    <p>Статус вашего заказа с номером отслеживания <strong th:text="${trackingNumber}">TRACKING123</strong>
+        был обновлен на: <span class="status" th:text="${statusDescription}">В пути</span></p>
+
+    <div th:if="${estimatedDeliveryTime != null}">
+        <p>Ожидаемое время доставки: <strong th:text="${#temporals.format(estimatedDeliveryTime, 'dd.MM.yyyy HH:mm')}">01.01.2025 12:00</strong></p>
+    </div>
+
+    <div th:if="${deliveryAddress != null}">
+        <p>Адрес доставки: <strong th:text="${deliveryAddress}">ул. Примерная, д. 123</strong></p>
+    </div>
+
+    <p>Вы можете отслеживать статус вашего заказа по ссылке:</p>
+
+    <div style="text-align: center;">
+        <a class="button" th:href="${trackingUrl}" target="_blank">Отследить заказ</a>
+    </div>
+
+    <p>Если у вас возникли вопросы, пожалуйста, свяжитесь с нашей службой поддержки.</p>
+</div>
+
+<div class="footer">
+    <p>С уважением,<br>Команда SCS</p>
+    <p>Это автоматическое уведомление, пожалуйста, не отвечайте на него.</p>
+</div>
+</body>
+</html>

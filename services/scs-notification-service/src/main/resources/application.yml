@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: scs-notification-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scs_notification_db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification-service-group
+      auto-offset-reset: earliest
+      # Важно для гарантии доставки (at-least-once)
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.pharmacy.scs.notification.dto,com.pharmacy.scs.dto
+        # Настройки для устойчивости к сбоям
+        max.poll.interval.ms: 300000
+        max.poll.records: 100
+        session.timeout.ms: 15000
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+kafka:
+  topics:
+    delivery-updates: delivery-updates
+    notification-dlq: notification-dlq  # Dead Letter Queue
+
+server:
+  port: 8082
+
+logging:
+  level:
+    com.pharmacy.scs: DEBUG
+    org.springframework.kafka: INFO
+    org.apache.kafka: INFO
+
+# Настройки уведомлений
+notification:
+  retry:
+    max-attempts: 3
+    backoff:
+      initial-interval: 1000
+      multiplier: 2
+      max-interval: 10000
+  templates:
+    email:
+      delivery-status: delivery-status
