@@ -80,7 +80,7 @@ public class KafkaListenerService {
 
             // Отправляем SMS уведомление, если есть номер телефона
             if (user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty()) {
-                sendNotificationByType(event, user.getPhoneNumber(), templateParams, Notification.NotificationType.SMS);
+                //sendNotificationByType(event, user.getPhoneNumber(), templateParams, Notification.NotificationType.SMS);
             }
 
             // Подтверждаем обработку сообщения только после успешной отправки уведомлений

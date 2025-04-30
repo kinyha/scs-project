@@ -36,7 +36,7 @@ public class Notification {
     @Column(length = 512)
     private String recipient; // email или номер телефона
 
-    @Column(length = 1024)
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Column(nullable = false)
