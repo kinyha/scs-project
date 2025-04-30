@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/scs_db
+    url: jdbc:postgresql://localhost:5434/scs_db
     username: postgres
     password: postgres
   jpa:

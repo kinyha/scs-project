@@ -15,6 +15,10 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     List<Notification> findByStatus(Notification.NotificationStatus status);
 
+    List<Notification> findByUserId(Long userId);
+
+    List<Notification> findByDeliveryId(Long deliveryId);
+
     @Query("SELECT n FROM Notification n WHERE n.status = :status AND n.retryCount < :maxRetries AND n.createdAt > :since")
     List<Notification> findFailedNotificationsForRetry(
             Notification.NotificationStatus status,

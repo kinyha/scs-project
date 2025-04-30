@@ -2,7 +2,7 @@ spring:
   application:
     name: scs-notification-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/scs_notification_db
+    url: jdbc:postgresql://localhost:5433/scs_notification_db
     username: postgres
     password: postgres
   jpa:

@@ -60,23 +60,22 @@ public class EmailNotificationService implements NotificationService {
             // Формируем тему письма
             String subject = getSubjectByEventType(event.getEventType());
 
-            // Отправляем письмо
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(recipientEmail);
-            helper.setSubject(subject);
-            helper.setText(emailContent, true); // true означает HTML-содержимое
-
-            mailSender.send(message);
+            // Вместо отправки письма - логируем в консоль
+            log.info("===== СИМУЛЯЦИЯ ОТПРАВКИ EMAIL =====");
+            log.info("Кому: {}", recipientEmail);
+            log.info("Тема: {}", subject);
+            log.info("Параметры шаблона: {}", templateParams);
+            log.info("Тип события: {}", event.getEventType());
+            log.info("=====================================");
 
             // Обновляем статус уведомления
             notification.setContent(emailContent);
             notification.markAsSent();
-            log.info("Email notification sent successfully to {} for delivery ID: {}",
+            log.info("Email notification simulated successfully to {} for delivery ID: {}",
                     recipientEmail, event.getDeliveryId());
 
-        } catch (MessagingException e) {
-            log.error("Failed to send email notification for delivery ID: {}",
+        } catch (Exception e) {
+            log.error("Failed to simulate email notification for delivery ID: {}",
                     event.getDeliveryId(), e);
             notification.markAsFailed(e.getMessage());
         }

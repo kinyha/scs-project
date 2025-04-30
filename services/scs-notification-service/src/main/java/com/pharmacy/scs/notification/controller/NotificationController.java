@@ -29,7 +29,8 @@ public class NotificationController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Notification>> getNotificationsByUser(@PathVariable Long userId) {
         log.debug("Getting notifications for user ID: {}", userId);
-        List<Notification> notifications = notificationRepository.findByUserIdAndDeliveryId(userId, null);
+        // Используем новый метод вместо findByUserIdAndDeliveryId
+        List<Notification> notifications = notificationRepository.findByUserId(userId);
         return ResponseEntity.ok(notifications);
     }
 
@@ -39,7 +40,8 @@ public class NotificationController {
     @GetMapping("/delivery/{deliveryId}")
     public ResponseEntity<List<Notification>> getNotificationsByDelivery(@PathVariable Long deliveryId) {
         log.debug("Getting notifications for delivery ID: {}", deliveryId);
-        List<Notification> notifications = notificationRepository.findByUserIdAndDeliveryId(null, deliveryId);
+        // Используем новый метод вместо findByUserIdAndDeliveryId
+        List<Notification> notifications = notificationRepository.findByDeliveryId(deliveryId);
         return ResponseEntity.ok(notifications);
     }
 

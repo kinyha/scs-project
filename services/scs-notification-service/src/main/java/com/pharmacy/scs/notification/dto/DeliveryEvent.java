@@ -30,9 +30,19 @@ public class DeliveryEvent {
     }
 
     public Long getUserId() {
-        return additionalData.containsKey("userId")
-                ? (Long) additionalData.get("userId")
-                : null;
+        if (additionalData.containsKey("userId")) {
+            Object value = additionalData.get("userId");
+            if (value instanceof Integer) {
+                return ((Integer) value).longValue();
+            } else if (value instanceof Long) {
+                return (Long) value;
+            } else if (value instanceof Number) {
+                return ((Number) value).longValue();
+            } else if (value instanceof String) {
+                return Long.parseLong((String) value);
+            }
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
