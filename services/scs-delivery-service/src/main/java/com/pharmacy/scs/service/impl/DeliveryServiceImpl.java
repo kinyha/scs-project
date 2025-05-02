@@ -9,7 +9,10 @@ import com.pharmacy.scs.service.DeliveryService;
 import com.pharmacy.scs.service.KafkaDeliveryEventService;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -18,12 +21,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class DeliveryServiceImpl implements DeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final KafkaDeliveryEventService eventService;
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @CacheEvict(value = {"userDeliveries", "deliveryByTracking"}, allEntries = true)
     public Delivery createDelivery(Delivery request) {
         Delivery delivery = deliveryRepository.save(request);
 
@@ -36,17 +40,22 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
+    @Cacheable(value = "deliveryByTracking", key = "#trackingNumber")
     public Optional<Delivery> getDeliveryByTrackingNumber(String trackingNumber) {
         return deliveryRepository.findByTrackingNumber(trackingNumber);
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
+    @Cacheable(value = "userDeliveries", key = "#userId")
     public List<Delivery> getDeliveriesByUserId(Long userId) {
         return (List<Delivery>) deliveryRepository.findByUserId(userId);
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @CacheEvict(value = {"userDeliveries", "deliveryByTracking"}, allEntries = true)
     public Delivery updateDeliveryStatus(Long deliveryId, DeliveryStatus status) {
         Delivery delivery = deliveryRepository.findById(deliveryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Delivery not found"));
@@ -54,9 +63,9 @@ public class DeliveryServiceImpl implements DeliveryService {
         return deliveryRepository.save(delivery);
     }
 
-
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @CacheEvict(value = {"userDeliveries", "deliveryByTracking"}, allEntries = true)
     public Delivery completeDelivery(Long deliveryId) {
         Delivery delivery = deliveryRepository.findById(deliveryId)
                 .orElseThrow(() -> new DeliveryNotFoundException(deliveryId));
@@ -72,5 +81,4 @@ public class DeliveryServiceImpl implements DeliveryService {
 
         return delivery;
     }
-
 }

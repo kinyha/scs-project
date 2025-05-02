@@ -3,6 +3,18 @@ spring:
     url: jdbc:postgresql://localhost:5434/scs_db
     username: postgres
     password: postgres
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetime: 900000
+    tomcat:
+      max-active: 15
+      max-idle: 10
+      min-idle: 5
+      max-wait: 10000
+      test-on-borrow: true
   jpa:
     hibernate:
       ddl-auto: update
@@ -10,6 +22,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        generate_statistics: true
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
   kafka:
     bootstrap-servers: localhost:9092
     producer:
