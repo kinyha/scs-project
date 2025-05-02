@@ -235,7 +235,6 @@ public class KafkaListenerService {
     }
 
     // Внутренний класс для данных пользователя
-    // В реальном проекте лучше вынести в отдельный файл
     public static class UserDTO {
         private Long id;
         private String username;

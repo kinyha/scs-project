@@ -22,7 +22,6 @@ public class DeliveryEvent {
     public static DeliveryEvent from(Delivery delivery, String eventType) {
         Map<String, Object> additionalData = new HashMap<>();
 
-        // Важно! Добавляем userId и другие необходимые поля
         additionalData.put("userId", delivery.getUser().getId());
         additionalData.put("trackingNumber", delivery.getTrackingNumber());
         additionalData.put("deliveryAddress", delivery.getDeliveryAddress());
@@ -32,7 +31,7 @@ public class DeliveryEvent {
                 delivery.getId(),
                 delivery.getStatus().toString(),
                 LocalDateTime.now(),
-                additionalData  // Передаем заполненную карту
+                additionalData
         );
 
         return event;

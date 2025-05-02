@@ -24,7 +24,6 @@ public class DeliveryResponseDTO {
     private LocalDateTime actualDeliveryTime;
     private DeliveryStatus status;
 
-    // Можно добавить дополнительные поля для удобства клиента
     private String statusDescription;
     private boolean isDelivered;
     private Long deliveryDuration;  // в минутах
