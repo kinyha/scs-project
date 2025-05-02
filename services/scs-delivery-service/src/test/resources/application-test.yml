@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    # Эти значения будут заменены динамически из TestContainer
+    url: jdbc:postgresql://localhost:5432/test_db
+    username: test_user
+    password: test_password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+kafka:
+  topics:
+    delivery-updates: delivery-updates-test
+
+logging:
+  level:
+    com.pharmacy.scs: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.testcontainers: INFO
