@@ -70,7 +70,7 @@ public class DataGenerator {
                 DeliveryStatus status = getRandomStatus();
 
                 Delivery delivery = new Delivery();
-                delivery.setTrackingNumber("TN" + UUID.randomUUID().toString().substring(0, 10));
+                delivery.setTrackingNumber("TN" + UUID.randomUUID().toString().substring(0, 16));
                 delivery.setUser(user);
                 delivery.setDeliveryAddress(generateRandomAddress());
 

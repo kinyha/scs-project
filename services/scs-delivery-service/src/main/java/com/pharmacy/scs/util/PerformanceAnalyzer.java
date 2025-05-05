@@ -21,13 +21,13 @@ public class PerformanceAnalyzer {
     private final Map<String, String> testQueries = Map.of(
             "all_deliveries", "SELECT * FROM deliveries",
             "user_deliveries", "SELECT * FROM deliveries WHERE user_id = 1",
-            "pending_deliveries", "SELECT * FROM deliveries WHERE status = 'PENDING'",
+            "pending_deliveries", "SELECT * FROM deliveries WHERE status = '3'",
             "date_range", "SELECT * FROM deliveries WHERE expected_delivery_time BETWEEN NOW() - INTERVAL '7 days' AND NOW() + INTERVAL '7 days'",
             "status_count", "SELECT status, COUNT(*) FROM deliveries GROUP BY status",
             "user_stats", "SELECT u.id, u.username, COUNT(d.id) as delivery_count FROM users u JOIN deliveries d ON u.id = d.user_id GROUP BY u.id, u.username",
             "complex_query", "SELECT u.username, d.tracking_number, d.status, d.expected_delivery_time, d.actual_delivery_time " +
                     "FROM users u JOIN deliveries d ON u.id = d.user_id " +
-                    "WHERE d.status IN ('DELIVERED', 'COMPLETED') " +
+                    "WHERE d.status IN ('5', '1') " +
                     "AND d.actual_delivery_time > d.expected_delivery_time"
     );
 

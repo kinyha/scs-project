@@ -6,6 +6,7 @@ import com.pharmacy.scs.entity.User;
 import com.pharmacy.scs.exception.DeliveryNotFoundException;
 import com.pharmacy.scs.repository.DeliveryRepository;
 import com.pharmacy.scs.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.doNothing;
  */
 @SpringBootTest
 @ActiveProfiles("test-h2")
+@Transactional
 public class DeliveryServiceIntegrationTest {
 
     @Autowired
@@ -53,22 +55,35 @@ public class DeliveryServiceIntegrationTest {
 
         // Создаем тестового пользователя
         testUser = new User();
-        testUser.setUsername("testUser");
-        testUser.setEmail("test@example.com");
+        testUser.setUsername("testUser" + System.currentTimeMillis()); // Добавь уникальность
+        testUser.setEmail("test" + System.currentTimeMillis() + "@example.com"); // Уникальный email
         testUser.setPhoneNumber("+71234567890");
         testUser.setPassword("password");
         testUser.setRole("USER");
+
+        // Сохраняем пользователя
         testUser = userRepository.save(testUser);
+
+        // Проверка
+        System.out.println("Saved user ID: " + testUser.getId());
+
+        // Выбираем пользователя из БД заново
+        Optional<User> foundUser = userRepository.findById(testUser.getId());
+        if (foundUser.isPresent()) {
+            testUser = foundUser.get();
+        } else {
+            throw new RuntimeException("Failed to save user properly");
+        }
 
         // Создаем тестовую доставку
         testDelivery = new Delivery();
         testDelivery.setTrackingNumber("TRACK" + System.currentTimeMillis());
-        testDelivery.setUser(testUser);
+        testDelivery.setUser(testUser); // Используем перезагруженного пользователя
         testDelivery.setDeliveryAddress("Test Address");
         testDelivery.setExpectedDeliveryTime(LocalDateTime.now().plusDays(1));
         testDelivery.setStatus(DeliveryStatus.PENDING);
 
-        // Мокируем Kafka, чтобы не отправлять реальные сообщения
+        // Мокируем Kafka
         doNothing().when(kafkaEventService).sendDeliveryEvent(any());
     }
 
